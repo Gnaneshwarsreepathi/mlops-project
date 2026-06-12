@@ -49,6 +49,57 @@ Azure App Service
 
 ---
 
+
+# Screenshots
+
+## 1. Azure DevOps Service Connection
+
+![Azure DevOps Service Connection](screenshots/image%201.png)
+
+Created an Azure Resource Manager service connection to securely connect Azure DevOps with Azure resources.
+
+---
+
+## 2. Azure Pipeline YAML Configuration
+
+![Azure Pipeline YAML](screenshots/image%202.png)
+
+Azure DevOps pipeline configured using YAML for automated build and deployment.
+
+---
+
+## 3. Successful Azure Pipeline Deployment
+
+![Pipeline Success](screenshots/image%203.png)
+
+CI/CD pipeline successfully deployed the application to Azure App Service.
+
+---
+
+## 4. Azure App Service Overview
+
+![Azure App Service Overview](screenshots/image%204.png)
+
+Azure App Service configuration showing Node.js runtime, Linux hosting, and deployment details.
+
+---
+
+## 5. Azure App Service Running
+
+![Azure App Service Running](screenshots/image%205.png)
+
+Application hosted successfully on Azure App Service and accessible through the Azure Web App URL.
+
+---
+
+## 6. MLOps AI Assistant User Interface
+
+![MLOps AI Assistant](screenshots/image%206.png)
+
+Deployed MLOps AI Assistant web application integrated with Google Gemini API.
+
+---
+
 ## Local Development
 
 ```bash
