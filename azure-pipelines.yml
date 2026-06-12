@@ -1,0 +1,82 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  azureServiceConnection: 'app-mlops'
+  webAppName: 'app-mlops'
+  nodeVersion: '22.x'
+  artifactName: 'drop'
+
+stages:
+
+- stage: Build
+  displayName: 'Build Node.js Application'
+
+  jobs:
+  - job: BuildJob
+    displayName: 'Install & Package'
+
+    steps:
+
+    - task: NodeTool@0
+      displayName: 'Use Node.js $(nodeVersion)'
+      inputs:
+        versionSpec: '$(nodeVersion)'
+
+    - script: |
+        npm install
+      displayName: 'Install dependencies'
+
+    - task: ArchiveFiles@2
+      displayName: 'Create ZIP Package'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(artifactName).zip'
+        replaceExistingArchive: true
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Artifact'
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: '$(artifactName)'
+        publishLocation: 'pipeline'
+
+- stage: Deploy
+  displayName: 'Deploy to Azure App Service'
+  dependsOn: Build
+  condition: succeeded()
+
+  jobs:
+  - deployment: DeployJob
+    displayName: 'Deploy Web App'
+    environment: 'production'
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download Artifact'
+            inputs:
+              artifactName: '$(artifactName)'
+              targetPath: '$(Pipeline.Workspace)/$(artifactName)'
+
+          - task: AzureRmWebAppDeployment@5
+            displayName: 'Deploy to Azure App Service'
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: '$(azureServiceConnection)'
+              appType: 'webAppLinux'
+              WebAppName: '$(webAppName)'
+              packageForLinux: '$(Pipeline.Workspace)/$(artifactName)/$(artifactName).zip'
+              RuntimeStack: 'NODE|22-lts'
+              StartupCommand: 'node server.js'
+              DeploymentTypeLinux: 'oneDeploy'
