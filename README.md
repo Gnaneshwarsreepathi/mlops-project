@@ -3,6 +3,20 @@
 Built an AI-powered assistant using Node.js and Google Gemini API.
 Implemented CI/CD using Azure DevOps Pipelines and deployed the application to Azure App Service.
 
+## Documentation
+
+A detailed step-by-step deployment guide for this project is available here:
+
+📄 [MLOps AI Assistant Azure DevOps CI/CD Deployment Guide](docs/MLOps_AI_Assistant_Deployment_Guide.docx)
+
+This guide covers:
+- Azure CLI authentication
+- Azure App Service creation
+- Azure DevOps Service Connections
+- Azure Pipelines (YAML)
+- CI/CD deployment workflow
+- Application verification and troubleshooting
+
 ## Technologies Used
 
 - Azure DevOps
